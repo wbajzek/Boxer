@@ -82,14 +82,23 @@ NSTimer *currentTimer;
 }
 
 -(void)notifyDone {
-    [[NSSound soundNamed:@"Blow"] play];
     
+    [NSThread detachNewThreadSelector:@selector(alarm) toTarget:self withObject:nil];
     NSUserNotification *notification = [[NSUserNotification alloc] init];
     notification.title = @"Boxer says \"time's up\"";
     
     [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
     
 }
+
+-(void)alarm {
+    NSSound *beep = [NSSound soundNamed:@"Blow"];
+    for (int i = 0; i < 3; i++) {
+        [beep play];
+        sleep(2);
+    }
+}
+
 
 -(NSString *)lpad:(NSString *)input {
     if (input.length == 1)
