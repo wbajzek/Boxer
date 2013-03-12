@@ -62,6 +62,7 @@ NSTimer *currentTimer;
     countdown.stringValue = [NSString stringWithFormat:@"%@:%@",minutes,seconds];
     if (currentTimer != nil)
         [currentTimer invalidate];
+    
 }
 
 -(void)count:(NSTimer *)timer {
@@ -76,8 +77,18 @@ NSTimer *currentTimer;
         currentTimer = nil;
         running = NO;
         goButton.title = @"Go!";
-        NSBeep();
+        [self notifyDone];
     }
+}
+
+-(void)notifyDone {
+    [[NSSound soundNamed:@"Blow"] play];
+    
+    NSUserNotification *notification = [[NSUserNotification alloc] init];
+    notification.title = @"Boxer says \"time's up\"";
+    
+    [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
+    
 }
 
 -(NSString *)lpad:(NSString *)input {
